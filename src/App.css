@@ -1,3 +1,61 @@
+body {
+	background: #444;
+	color: #e1e1e1;
+}
+
+.board {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+	border: 1px solid #111;
+	width: 320px;
+	height: 320px;
+	margin: auto;
+	border-radius: 12px;
+	box-shadow: 2px 2px #666, 3px 3px #eee;
+	background: linear-gradient(-45deg, #111, #333);
+}
+
+.row {
+	display: flex;
+	width: 100%;
+	justify-content: space-evenly;
+	align-items: center
+}
+
+.cell {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 72px;
+	height: 72px;
+	border: 1px solid #000;
+	box-shadow: 1px 1px #eee;
+	border-radius: 12px;
+
+	overflow: hidden;
+}
+
+.cell::after {
+	content: '';
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	width: calc(100% + 4px);
+	height: calc(100% + 4px);
+	background: #222;
+}
+
+.cell.pressed {
+	transform: translate(2px, 2px);
+	box-shadow: -1px -1px #222;
+}
+
+.cell.pressed::after {
+	background: transparent;
+}
+
 .App {
   text-align: center;
 }
