@@ -17,6 +17,7 @@ class Board extends Component {
 		this.press = this.press.bind(this);
 	}
 
+	// This whole operation will happen server-side
 	randomizeNewBoard() {
 		let board = [];
 		for (let i = 0; i < this.state.size; i++) {
@@ -30,7 +31,13 @@ class Board extends Component {
 	}
 
 	componentDidMount() {
-		this.randomizeNewBoard();
+		this.randomizeNewBoard(); // This should be handed from the server
+		// this.preloadImages();
+	}
+
+	preloadImages() {
+		// Here we should peek from board state to load images, since
+		// they will be hidden from the DOM until the user clicks a tile
 	}
 
 	press(e, position) {

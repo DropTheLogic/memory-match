@@ -8,7 +8,7 @@ const PlayerPanel = (props) => {
 	return (
 		<section className="players">
 			<UserCard name={getRandomName()} imgSize={64} />
-			<h2 className="vs-panel">Vs.</h2>
+			<h2 className="vs-panel">VS</h2>
 			<UserCard name={getRandomName()} imgSize={64} />
 		</section>
 	);
