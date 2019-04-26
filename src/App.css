@@ -31,7 +31,7 @@ body {
 	width: 72px;
 	height: 72px;
 	border: 1px solid #000;
-	box-shadow: 1px 1px #eee;
+	box-shadow: -1px -1px #eee, 1px 1px #111;
 	border-radius: 12px;
 
 	overflow: hidden;
@@ -48,7 +48,6 @@ body {
 }
 
 .cell.pressed {
-	transform: translate(2px, 2px);
 	box-shadow: -1px -1px #222;
 }
 
@@ -60,32 +59,43 @@ body {
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+section.players {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 320px;
+	margin: 20px auto;
+
+	background: #111;
+
+	box-shadow: 2px 2px #222;
+	border-radius: 12px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.user-card {
+	width: 40%;
+	height: 100%;
+	padding: 12px;
+
+	background: #222;
+
+	border: 1px solid #666;
+	border-radius: 12px;
+	box-sizing: border-box;
 }
 
-.App-link {
-  color: #61dafb;
+.card-divider {
+	height: 1px;
+	width: 100%;
+	margin-bottom: 20px;
+	background: #666;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* TODO: properly center this absolute item */
+.vs-panel {
+	position: absolute;
+	left: calc(50% - 15px);
+	top: calc(50% - 35px);
+	transform: rotate(-15deg);
 }
