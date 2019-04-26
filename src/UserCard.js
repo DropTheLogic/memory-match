@@ -22,19 +22,19 @@ class UserCard extends Component {
 	}
 
 	componentDidMount() {
-
+		// Retrieve player data here? Or just have it handed as props?
 	}
 
 	render() {
 		const { name, imgSize: size } = this.props;
+		// TODO: this should be brought in from the server
 		const imgUrl = `https://api.adorable.io/avatars/${size * 2}/${removeSpaces(name)}`;
 		return (
 			<div className="user-card">
 				<picture>
 					<img
 						src={imgUrl}
-						alt={`Avatar for ${name}`}
-						style={{width: size, height: size}} />
+						alt={`Avatar for ${name}`}/>
 				</picture>
 				<h3 className="card-name">{name}</h3>
 				<div className="card-divider" />

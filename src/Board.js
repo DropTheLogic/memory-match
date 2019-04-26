@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getRandomName, removeSpaces, debounce } from './utils/helperFuncs';
+import { getRandomName, debounce } from './utils/helperFuncs';
 import Cell from './Cell';
 
 class Board extends Component {
@@ -22,7 +22,7 @@ class Board extends Component {
 		for (let i = 0; i < this.state.size; i++) {
 			let row = [];
 			for (let j = 0; j < this.state.size; j++) {
-				row.push({ name: removeSpaces(getRandomName()) })
+				row.push({ name: getRandomName() })
 			}
 			board.push(row);
 		}

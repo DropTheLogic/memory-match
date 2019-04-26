@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { removeSpaces } from './utils/helperFuncs';
 
 class Cell extends Component {
 	constructor(props) {
@@ -17,7 +18,7 @@ class Cell extends Component {
 			<div className={classList} onClick={(e) => this.props.press(e, position)}>{
 				isPressed ?
 				<img
-					src={`https://api.adorable.io/avatars/${size * 2}/${name}`}
+					src={`https://api.adorable.io/avatars/${size * 2}/${removeSpaces(name)}`}
 					alt={name}
 					style={{width: size, height: size}} />
 				:
