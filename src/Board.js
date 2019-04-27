@@ -94,42 +94,56 @@ class Board extends Component {
 		let board = [...this.state.board];
 		board.forEach((row, i) => board[i] = [...row]);
 
-		const [x, y] = position; // Position of pressed tile
-		// Second pick, when one is already awaiting a match
-		if (this.state.pressed.length > 0 && !board[x][y].isPressed) {
-			// Callback function, flip pieces back over automatically
-			const delayed = debounce((pressed) => {
-				let tileA = board[this.state.pressed[0][0]][this.state.pressed[0][1]];
-				let tileB = board[this.state.pressed[1][0]][this.state.pressed[1][1]];
-				tileA.isPressed = false;
-				tileB.isPressed = false;
-				if (tileA.name === tileB.name) {
-					tileA.isCaptured = true;
-					tileB.isCaptured = true;
-				}
+		// Position of currently pressed tile
+		const [x, y] = position;
 
+		// Target pick, when one tile is already awaiting a match
+		if (this.state.pressed.length > 0 && !board[x][y].isPressed) {
+			const [targetRow, targetCol] = this.state.pressed[0];
+			const tileGuess = board[x][y];
+			const tileTarget = board[targetRow][targetCol];
+
+			// If tiles match, set captured properties to true
+			if (tileGuess.name === tileTarget.name) {
+				tileGuess.isCaptured = true;
+				tileGuess.isPressed = false;
+				tileTarget.isCaptured = true;
+				tileTarget.isPressed = false;
 				this.setState({
 					pressed: [],
 					board,
-					isFrozen: false
+					isFroze: false
 				})
-			}, 500);
+			}
+			else { // If no match was found
+				// Callback: flip both tiles back over automatically
+				const delayed = debounce(() => {
+					tileTarget.isPressed = false;
+					tileGuess.isPressed = false;
 
-			board[x][y].isPressed = true;
+					this.setState({
+						pressed: [],
+						board,
+						isFrozen: false
+					})
+				}, 500);
 
-			this.setState((state) => ({
-				pressed: [...state.pressed, [x,y]],
-				board,
-				isFrozen: true
-			}), delayed());
+				// Initially, flip over second/unmatching tile
+				board[x][y].isPressed = true;
+				this.setState((state) => ({
+					pressed: [...state.pressed, [x,y]],
+					board,
+					isFrozen: true
+				}), delayed()); // Then callback to flip unmatched tiles back
+			}
 		}
-		// First pick
+		// First pick, when no tiles are currently pressed
 		else if (!board[x][y].isPressed) {
 			board[x][y].isPressed = true;
-			this.setState((state, props) => ({
+			this.setState({
 				pressed: [[x, y]],
 				board
-			}));
+			});
 		}
 	}
 
