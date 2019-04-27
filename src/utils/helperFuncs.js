@@ -22,6 +22,19 @@ export const titleCase = (word) => word[0].toUpperCase() + word.slice(1).toLower
 export const removeSpaces = (word) => word.split(' ').join('');
 
 /**
+ * Returns string of random capital letters
+ * @param {int} length - length of string to return
+ */
+export const generateRoomId = (length) => {
+	return new Array(length).fill('').map(char => {
+		let num = getRandomInt(65, 91);
+		console.log('genereated a ', num, ', code is ', String.fromCharCode(num))
+		let code = String.fromCharCode(num);
+		return code;
+	}).join('');
+};
+
+/**
  * Returns random three string "name"
  */
 export const getRandomName = () => {

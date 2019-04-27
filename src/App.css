@@ -13,7 +13,7 @@ h2, h3, h4, h5 {
 	font-weight: 400;
 }
 
-.board {
+.board, .lobby-list {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-evenly;
@@ -24,6 +24,69 @@ h2, h3, h4, h5 {
 	border-radius: 12px;
 	box-shadow: -1px -1px #666, 2px 2px #666, 3px 3px #eee;
 	background: linear-gradient(-45deg, #111, #333);
+}
+
+.lobby h3 {
+	width: 320px;
+	margin: 0 auto;
+	text-align: left;
+}
+
+.lobby-list {
+	display: block;
+	margin-bottom: 30px;
+
+	overflow-y: auto;
+	border-radius: 12px 0 0 12px;
+}
+
+.lobby-player-card,
+.lobby-game-card {
+	display: flex;
+	align-items: center;
+	flex-grow: 0;
+	margin: 0 6px 8px 0;
+
+	background: #222;
+
+	border-radius: 12px 0 0 12px;
+	box-shadow: 1px 1px 2px #000;
+}
+
+.lobby-player-card picture {
+	height: 48px;
+}
+
+.lobby-player-card img {
+	width: 48px;
+	height: auto;
+	border-radius: 12px;
+	margin-right: 6px;
+}
+
+.lobby-player-info,
+.lobby-game-info {
+	padding: 2px;
+	text-align: left;
+}
+
+.lobby-game-info {
+	padding: 12px;
+}
+
+.lobby-player-name,
+.lobby-game-id {
+	margin: 0;
+}
+
+.lobby-player-status.ingame,
+.lobby-game-status.ingame {
+	color: red;
+}
+
+.lobby-player-status.awaiting,
+.lobby-game-status.awaiting {
+	color: green;
 }
 
 .row {
@@ -126,4 +189,22 @@ section.players {
 	text-shadow: 1px 1px 2px #333;
 
 	transform: rotate(-15deg);
+}
+
+.button-join-game {
+	padding: 4px 8px;
+
+	font-family: 'Montserrat', sans-serif;
+	font-size: 14px;
+	color: #eee;
+	background: linear-gradient(145deg, rgb(8, 175, 64), rgb(5, 133, 48));
+
+	outline: none;
+	border: 1px solid rgb(8, 175, 64);
+	border-radius: 4px;
+}
+
+.button-join-game:active {
+	background: linear-gradient(-145deg, rgb(8, 175, 64), rgb(5, 133, 48));
+	border: 1px solid #eee;
 }
