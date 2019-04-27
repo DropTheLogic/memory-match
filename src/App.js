@@ -8,7 +8,7 @@ import './App.css';
 function App() {
 	return (
 		<div className="App">
-			<header><h1>Memory Match</h1></header>
+			<header><h1>Memory Match Duel</h1></header>
 			<Board />
 			<PlayerPanel />
 		</div>
