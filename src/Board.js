@@ -67,16 +67,19 @@ class Board extends Component {
 			}
 		}
 
-		this.setState(() => ({ board }), this.preloadImages());
+		this.setState(() => ({ board }), this.preloadImages(uniqueTiles));
 	}
 
 	componentDidMount() {
 		this.randomizeNewBoard(); // This should be handed from the server
 	}
 
-	preloadImages() {
+	preloadImages(images) {
 		// Here we should peek from board state to load images, since
 		// they will be hidden from the DOM until the user clicks a tile
+		images.forEach(tileObj => {
+			new Image().src = tileObj.url;
+		});
 	}
 
 	press(e, position) {
