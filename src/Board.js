@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { getRandomName, debounce } from './utils/helperFuncs';
+import { getRandomInt, getRandomName, removeSpaces, debounce } from './utils/helperFuncs';
 import Cell from './Cell';
 
 class Board extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			// Gameboard width & height. Must be divisible by 2
 			size: props.size || 4,
 			cellSize: props.cellSize || 72,
 			board: [[]],
+			uniqueTiles: [],
 			pressed: [],
 			isFrozen: false
 		}
@@ -17,22 +19,59 @@ class Board extends Component {
 		this.press = this.press.bind(this);
 	}
 
+	initializeGrid(size) {
+		let grid = [];
+		for (let i = 0; i < size; i++) {
+			let row = [];
+			for (let j = 0; j < size; j++) {
+				row.push(null);
+			}
+			grid.push(row);
+		}
+		return grid;
+	}
+
 	// This whole operation will happen server-side
 	randomizeNewBoard() {
-		let board = [];
-		for (let i = 0; i < this.state.size; i++) {
-			let row = [];
-			for (let j = 0; j < this.state.size; j++) {
-				row.push({ name: getRandomName() })
+		const { size, cellSize } = this.state;
+		// Generate unique image/name for 1/2 gameboard size
+		let uniqueTiles = new Array(size * size / 2).fill('').map(tile => {
+			let name = getRandomName();
+			let imageSize = cellSize * 2; // This is for the benifit of x2 screens
+			// adorable.io generates images by hashing a given string
+			let url = `https://api.adorable.io/avatars/${imageSize}/${removeSpaces(name)}`;
+			return ({name, url});
+		});
+
+		let board = this.initializeGrid(this.state.size);
+		let unmatchedTileIndices = uniqueTiles.map((tile, i) => i);
+
+		while (unmatchedTileIndices.length > 0) {
+			let row = getRandomInt(0, size);
+			let col = getRandomInt(0, size);
+
+			if (!board[row][col]) {
+				// Set first tile
+				let index = unmatchedTileIndices[0];
+				board[row][col] = {...uniqueTiles[index]};
+				// Set the matching tile
+				while (board[row][col]) {
+					row = getRandomInt(0, size);
+					col = getRandomInt(0, size);
+					if (board[row][col] === null) {
+						board[row][col] = {...uniqueTiles[index]};
+						unmatchedTileIndices.shift();
+						break;
+					}
+				}
 			}
-			board.push(row);
 		}
-		this.setState({ board });
+
+		this.setState(() => ({ board }), this.preloadImages());
 	}
 
 	componentDidMount() {
 		this.randomizeNewBoard(); // This should be handed from the server
-		// this.preloadImages();
 	}
 
 	preloadImages() {
@@ -45,18 +84,25 @@ class Board extends Component {
 		e.preventDefault();
 		let board = [...this.state.board];
 		const [x, y] = position;
+		// Second pick
 		if (this.state.pressed.length > 0 && !board[x][y].isPressed) {
 			const delayed = debounce((pressed) => {
 				board.forEach((row, i) => board[i] = [...row]);
-				board[this.state.pressed[0][0]][this.state.pressed[0][1]].isPressed = false;
-				board[this.state.pressed[1][0]][this.state.pressed[1][1]].isPressed = false;
+				let tileA = board[this.state.pressed[0][0]][this.state.pressed[0][1]];
+				let tileB = board[this.state.pressed[1][0]][this.state.pressed[1][1]]
+				tileA.isPressed = false;
+				tileB.isPressed = false;
+				if (tileA.name === tileB.name) {
+					tileA.isCaptured = true;
+					tileB.isCaptured = true;
+				}
 
 				this.setState({
 					pressed: [],
 					board,
 					isFrozen: false
 				})
-			}, 1000);
+			}, 500);
 
 			board.forEach((row, i) => board[i] = [...row]);
 				board[x][y].isPressed = true;
@@ -67,6 +113,7 @@ class Board extends Component {
 				isFrozen: true
 			}), delayed());
 		}
+		// First pick
 		else if (!board[x][y].isPressed) {
 			let board = [...this.state.board];
 			board[x] = [...board[x]];
@@ -90,10 +137,9 @@ class Board extends Component {
 								row.map((cell, j) =>
 									<Cell
 										key={`row${i}col${j}`}
-										name={cell.name}
+										cell={cell}
 										size={this.state.cellSize}
 										position={[i, j]}
-										isPressed={cell.isPressed}
 										press={this.press}/>
 								)
 							}

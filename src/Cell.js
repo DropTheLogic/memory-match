@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { removeSpaces } from './utils/helperFuncs';
 
 class Cell extends Component {
 	constructor(props) {
@@ -9,20 +8,26 @@ class Cell extends Component {
 		}
 	}
 
-
-
 	render() {
-		const { name, size, isPressed, position } = this.props;
-		const classList = `cell${isPressed ? ' pressed' : ''}`
+		const { cell, size, position } = this.props;
+		const { name, url, isPressed, isCaptured } = cell;
+		const isVisible = isPressed || isCaptured;
+		const classList = `cell${isVisible ? ' pressed' : ''}`;
+
 		return (
-			<div className={classList} onClick={(e) => this.props.press(e, position)}>{
-				isPressed ?
-				<img
-					src={`https://api.adorable.io/avatars/${size * 2}/${removeSpaces(name)}`}
-					alt={name}
-					style={{width: size, height: size}} />
-				:
-				null}
+			<div
+				className={classList}
+				onClick={(e) => isVisible ?
+					null : this.props.press(e, position)}>
+				{
+					isVisible ?
+					<img
+						src={url}
+						alt={name}
+						style={{width: size, height: size}} />
+					:
+					null
+				}
 			</div>
 		);
 	}
