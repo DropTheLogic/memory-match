@@ -64,8 +64,13 @@ h2, h3, h4, h5 {
 	box-shadow: -1px -1px #222;
 }
 
-.cell.pressed::after {
+.cell.pressed::after,
+.cell.captured::after {
 	background: transparent;
+}
+
+.cell.captured {
+	box-shadow: -1px -1px #222, 0 0 0 3px #6ff2c6;
 }
 
 .App {

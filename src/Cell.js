@@ -9,15 +9,15 @@ class Cell extends Component {
 	}
 
 	render() {
-		const { cell, size, position } = this.props;
+		const { cell, size, position, isFrozen } = this.props;
 		const { name, url, isPressed, isCaptured } = cell;
 		const isVisible = isPressed || isCaptured;
-		const classList = `cell${isVisible ? ' pressed' : ''}`;
+		const classList = `cell${isPressed ? ' pressed' : isCaptured ? ' captured' : ''}`;
 
 		return (
 			<div
 				className={classList}
-				onClick={(e) => isVisible ?
+				onClick={(e) => isVisible || isFrozen ?
 					null : this.props.press(e, position)}>
 				{
 					isVisible ?

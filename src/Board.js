@@ -31,18 +31,31 @@ class Board extends Component {
 		return grid;
 	}
 
+	preloadImages(arrOfImageObjects) {
+		// Here we should peek from board state to load images, since
+		// they will be hidden from the DOM until the user clicks a tile
+		arrOfImageObjects.forEach(imageObj => {
+			new Image().src = imageObj.url;
+		});
+	}
+
+	getUniqueTiles(numberOfTiles, pixelSize) {
+		// TODO: though unlikely, this could produce duplicates. Prevent dupes!
+		return new Array(numberOfTiles).fill({}).map(tile => {
+			let name = getRandomName();
+			let imageSize = pixelSize * 2; // This is for the benifit of x2 screens
+			// adorable.io generates images by hashing a given string
+			let api = 'https://api.adorable.io/avatars';
+			let url = `${api}/${imageSize}/${removeSpaces(name)}`;
+			return ({name, url});
+		});
+	}
+
 	// This whole operation will happen server-side
 	randomizeNewBoard() {
 		const { size, cellSize } = this.state;
 		// Generate unique image/name for 1/2 gameboard size
-		let uniqueTiles = new Array(size * size / 2).fill('').map(tile => {
-			let name = getRandomName();
-			let imageSize = cellSize * 2; // This is for the benifit of x2 screens
-			// adorable.io generates images by hashing a given string
-			let url = `https://api.adorable.io/avatars/${imageSize}/${removeSpaces(name)}`;
-			return ({name, url});
-		});
-
+		const uniqueTiles = this.getUniqueTiles((size * size / 2), cellSize);
 		let board = this.initializeGrid(this.state.size);
 		let unmatchedTileIndices = uniqueTiles.map((tile, i) => i);
 
@@ -74,25 +87,20 @@ class Board extends Component {
 		this.randomizeNewBoard(); // This should be handed from the server
 	}
 
-	preloadImages(images) {
-		// Here we should peek from board state to load images, since
-		// they will be hidden from the DOM until the user clicks a tile
-		images.forEach(tileObj => {
-			new Image().src = tileObj.url;
-		});
-	}
-
 	press(e, position) {
-		if (!this.state.isFrozen) {
 		e.preventDefault();
+
+		// Copy board state
 		let board = [...this.state.board];
-		const [x, y] = position;
-		// Second pick
+		board.forEach((row, i) => board[i] = [...row]);
+
+		const [x, y] = position; // Position of pressed tile
+		// Second pick, when one is already awaiting a match
 		if (this.state.pressed.length > 0 && !board[x][y].isPressed) {
+			// Callback function, flip pieces back over automatically
 			const delayed = debounce((pressed) => {
-				board.forEach((row, i) => board[i] = [...row]);
 				let tileA = board[this.state.pressed[0][0]][this.state.pressed[0][1]];
-				let tileB = board[this.state.pressed[1][0]][this.state.pressed[1][1]]
+				let tileB = board[this.state.pressed[1][0]][this.state.pressed[1][1]];
 				tileA.isPressed = false;
 				tileB.isPressed = false;
 				if (tileA.name === tileB.name) {
@@ -107,8 +115,7 @@ class Board extends Component {
 				})
 			}, 500);
 
-			board.forEach((row, i) => board[i] = [...row]);
-				board[x][y].isPressed = true;
+			board[x][y].isPressed = true;
 
 			this.setState((state) => ({
 				pressed: [...state.pressed, [x,y]],
@@ -118,14 +125,11 @@ class Board extends Component {
 		}
 		// First pick
 		else if (!board[x][y].isPressed) {
-			let board = [...this.state.board];
-			board[x] = [...board[x]];
 			board[x][y].isPressed = true;
 			this.setState((state, props) => ({
 				pressed: [[x, y]],
 				board
 			}));
-		}
 		}
 	}
 
@@ -143,6 +147,7 @@ class Board extends Component {
 										cell={cell}
 										size={this.state.cellSize}
 										position={[i, j]}
+										isFrozen={this.state.isFrozen}
 										press={this.press}/>
 								)
 							}
