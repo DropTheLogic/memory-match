@@ -23,12 +23,11 @@ export const removeSpaces = (word) => word.split(' ').join('');
 
 /**
  * Returns string of random capital letters
- * @param {int} length - length of string to return
+ * @param {int} length - length of string to return (optional)
  */
-export const generateRoomId = (length) => {
+export const generateRoomId = (length = 5) => {
 	return new Array(length).fill('').map(char => {
 		let num = getRandomInt(65, 91);
-		console.log('genereated a ', num, ', code is ', String.fromCharCode(num))
 		let code = String.fromCharCode(num);
 		return code;
 	}).join('');

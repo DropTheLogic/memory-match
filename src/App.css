@@ -53,6 +53,11 @@ h2, h3, h4, h5 {
 	box-shadow: 1px 1px 2px #000;
 }
 
+.lobby-game-card {
+	justify-content: space-between;
+	padding: 12px;
+}
+
 .lobby-player-card picture {
 	height: 48px;
 }
@@ -68,10 +73,6 @@ h2, h3, h4, h5 {
 .lobby-game-info {
 	padding: 2px;
 	text-align: left;
-}
-
-.lobby-game-info {
-	padding: 12px;
 }
 
 .lobby-player-name,
@@ -191,11 +192,34 @@ section.players {
 	transform: rotate(-15deg);
 }
 
-.button-join-game {
+/****************************
+ * Buttons
+ ****************************/
+button {
 	padding: 4px 8px;
 
 	font-family: 'Montserrat', sans-serif;
 	font-size: 14px;
+	color: #eee;
+	background: linear-gradient(145deg, rgb(8, 175, 64), rgb(5, 133, 48));
+
+	outline: none;
+	border: 1px solid rgb(8, 175, 64);
+	border-radius: 4px;
+	box-shadow: 1px 1px 4px #333;
+}
+
+button:active {
+	background: linear-gradient(-145deg, rgb(8, 175, 64), rgb(5, 133, 48));
+	border: 1px solid #eee;
+}
+
+.button-create-game {
+	font-size: 18px;
+	margin: 5px 20px 20px;
+}
+
+.button-join-game {
 	color: #eee;
 	background: linear-gradient(145deg, rgb(8, 175, 64), rgb(5, 133, 48));
 
@@ -207,4 +231,17 @@ section.players {
 .button-join-game:active {
 	background: linear-gradient(-145deg, rgb(8, 175, 64), rgb(5, 133, 48));
 	border: 1px solid #eee;
+}
+
+/****************************
+ * Animations
+ ****************************/
+.pulsing {
+	animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+	50% {
+		box-shadow: 0 0 6px 2px rgb(8, 175, 64);
+	}
 }
