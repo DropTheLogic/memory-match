@@ -1,4 +1,6 @@
 body {
+	position: relative;
+	top: 0;
 	background: #444;
 	color: #f1f1f1;
 }
@@ -11,6 +13,17 @@ h1 {
 h2, h3, h4, h5 {
 	letter-spacing: -1px;
 	font-weight: 400;
+}
+
+header h1 {
+	margin: 2px;
+}
+
+header {
+	margin-bottom: 20px;
+	padding: 10px;
+	background: #222;
+	box-shadow: 0 4px 2px #000;
 }
 
 .main-screen h3 {
@@ -277,13 +290,10 @@ button:active {
 
 .main-menu button {
 	padding: 8px;
-}
-
-.main-menu .button-create-game,
-.main-menu .button-join-game {
 	font-size: 18px;
 	margin: 8px 0;
 }
+
 /*
 .main-menu .button-join-game {
 	background: linear-gradient(145deg, rgb(8, 75, 175), rgb(6, 55, 129));
@@ -306,5 +316,48 @@ button:active {
 @keyframes pulse {
 	50% {
 		box-shadow: 0 0 6px 2px rgb(8, 175, 64);
+	}
+}
+
+
+/****************************
+ * Media Queries
+ ****************************/
+@media screen and (min-width: 800px) {
+	main {
+		/* display: flex;
+		justify-content: space-evenly; */
+		width: 90%;
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	.main-screen {
+		display: flex;
+		justify-content: center;
+		align-items: flex-end;
+	}
+
+	.user-landing,
+	.main-menu {
+		margin: 0 20px;
+	}
+
+	.lobby {
+		margin-top: 64px;
+		display: flex;
+		justify-content: space-around;
+	}
+
+	.lobby h2 {
+		display: none;
+	}
+
+	.lobby h3 {
+		text-align: right;
+	}
+
+	.lobby .button-create-game {
+		display: none;
 	}
 }

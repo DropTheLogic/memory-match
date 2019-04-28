@@ -25,23 +25,26 @@ class Main extends Component {
 		const imgUrl = `https://api.adorable.io/avatars/${512}/${this.state.me.id}`;
 		return (
 			<section className="main-screen">
-				<h2> - Welcome - </h2>
-				<div className="user-splash">
-					<h2>{this.state.me.name}</h2>
-					<img src={imgUrl} alt={this.state.me.name} />
+				<div className="user-landing">
+					<h2> - Welcome - </h2>
+					<div className="user-splash">
+						<h2>{this.state.me.name}</h2>
+						<img src={imgUrl} alt={this.state.me.name} />
+					</div>
 				</div>
-				<button className="button-create-user">
-					New random user
-				</button>
 
-				<h3>What would you like to do?</h3>
 				<div className="main-menu">
+					<h3>What would you like to do?</h3>
 					<button className="button-create-game">
 						Create Game Room
 					</button>
 
 					<button className="button-join-game">
 						Join Game
+					</button>
+
+					<button className="button-create-user">
+						Randomize My User
 					</button>
 				</div>
 

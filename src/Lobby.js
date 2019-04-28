@@ -55,34 +55,38 @@ class Lobby extends Component {
 
 				<button className="button-create-game" onClick={() => this.addRoom()}>Create Game Room</button>
 
-				<h3>Game Rooms</h3>
-				<div className="lobby-list">
-					{
-						roomKeys.length > 0 ?
-						roomKeys.map(key =>
-							<LobbyGameCard key={key} gameData={{id: key, status: rooms[key].gameState}} />
-						)
-						:
-						<div>
-							<h2>
-								<div>No rooms yet!</div>
-								<div>Start one now:</div>
-							</h2>
-							<button className="button-create-game pulsing">
-								Create Game Room
-							</button>
-						</div>
+				<div className="games-container">
+					<h3>Game Rooms</h3>
+					<div className="lobby-list">
+						{
+							roomKeys.length > 0 ?
+							roomKeys.map(key =>
+								<LobbyGameCard key={key} gameData={{id: key, status: rooms[key].gameState}} />
+							)
+							:
+							<div>
+								<h2>
+									<div>No rooms yet!</div>
+									<div>Start one now:</div>
+								</h2>
+								<button className="button-create-game pulsing">
+									Create Game Room
+								</button>
+							</div>
 
-					}
+						}
+					</div>
 				</div>
 
-				<h3>Players</h3>
-				<div className="lobby-list">
-					{
-						userKeys.map(key =>
-							<LobbyPlayerCard key={key} player={users[key]} size={48} />
-						)
-					}
+				<div className="players-container">
+					<h3>Players</h3>
+					<div className="lobby-list">
+						{
+							userKeys.map(key =>
+								<LobbyPlayerCard key={key} player={users[key]} size={48} />
+							)
+						}
+					</div>
 				</div>
 			</section>
 		);
