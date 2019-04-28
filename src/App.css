@@ -13,6 +13,34 @@ h2, h3, h4, h5 {
 	font-weight: 400;
 }
 
+.main-screen h3 {
+	margin: 30px auto 5px;
+}
+
+.user-splash {
+	width: 256px;
+	margin: auto;
+
+	font-size: 12px;
+	background: #222;
+	color: #eee;
+	border-radius: 12px;
+	box-shadow: 0 0 1px 2px #111, 2px 2px 2px #111;
+}
+
+.user-splash h2 {
+	margin: 4px 12px;
+	font-size: 28px;
+	font-weight: 900;
+}
+
+.user-splash img {
+	width: 256px;
+	height: 256px;
+	border-top: 1px solid #eee;
+	border-radius: 0 0 12px 12px;
+}
+
 .board, .lobby-list {
 	display: flex;
 	flex-wrap: wrap;
@@ -200,18 +228,19 @@ button {
 
 	font-family: 'Montserrat', sans-serif;
 	font-size: 14px;
-	color: #eee;
-	background: linear-gradient(145deg, rgb(8, 175, 64), rgb(5, 133, 48));
+	color: #000;
+	background: linear-gradient(170deg, #a7abc7, #818499);
 
 	outline: none;
-	border: 1px solid rgb(8, 175, 64);
+	border: 1px solid #a7abc7;
 	border-radius: 4px;
-	box-shadow: 1px 1px 4px #333;
+	box-shadow: 1px 1px 4px #222;
 }
 
 button:active {
-	background: linear-gradient(-145deg, rgb(8, 175, 64), rgb(5, 133, 48));
+	background: linear-gradient(-170deg, #a7abc7, #818499);;
 	border: 1px solid #eee;
+	box-shadow: 1px 1px 6px 2px #222;
 }
 
 .button-create-game {
@@ -219,19 +248,53 @@ button:active {
 	margin: 5px 20px 20px;
 }
 
-.button-join-game {
+.button-join-game,
+.button-create-game {
 	color: #eee;
-	background: linear-gradient(145deg, rgb(8, 175, 64), rgb(5, 133, 48));
+	background: linear-gradient(170deg, rgb(11, 146, 56), rgb(8, 110, 42));
 
 	outline: none;
-	border: 1px solid rgb(8, 175, 64);
+	border: 1px solid rgb(11, 146, 56);
 	border-radius: 4px;
 }
 
-.button-join-game:active {
-	background: linear-gradient(-145deg, rgb(8, 175, 64), rgb(5, 133, 48));
+.button-join-game:active,
+.button-create-game:active {
+	background: linear-gradient(-170deg, rgb(11, 146, 56), rgb(8, 110, 42));
 	border: 1px solid #eee;
 }
+
+.button-create-user {
+	margin-top: 10px;
+}
+
+.main-menu {
+	display: flex;
+	flex-direction: column;
+	width: 256px;
+	margin: 4px auto;
+}
+
+.main-menu button {
+	padding: 8px;
+}
+
+.main-menu .button-create-game,
+.main-menu .button-join-game {
+	font-size: 18px;
+	margin: 8px 0;
+}
+/*
+.main-menu .button-join-game {
+	background: linear-gradient(145deg, rgb(8, 75, 175), rgb(6, 55, 129));
+	border: 1px solid rgb(8, 75, 175);
+}
+
+.main-menu .button-join-game:active {
+	background: linear-gradient(-145deg, rgb(8, 75, 175), rgb(6, 55, 129));
+	border: 1px solid #eee;
+}
+ */
 
 /****************************
  * Animations
