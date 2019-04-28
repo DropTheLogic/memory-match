@@ -1,6 +1,7 @@
-import React, { Fragment } from 'react';
-import { Route, Switch, Redirct } from 'react-router-dom';
+import React, { Component, Fragment } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Media from 'react-media';
+import fire from './fire';
 
 import Board from './Board';
 import Lobby from './Lobby';
@@ -11,15 +12,37 @@ import me from './me';
 
 import './App.css';
 
-function App() {
+class App extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			me: {}
+		}
+		this.myRef = {};
+	}
+
+	componentDidMount() {
+		this.myRef = fire.database().ref(`users/${me.id}`);
+		this.myRef.on('value', snapshot => {
+			let me = snapshot.val();
+			this.setState({ me: {...me} });
+		});
+	}
+
+	componentWillUnmount() {
+		this.myRef.off('value');
+	}
+
+	render() {
 	return (
 		<div className="App">
 			<header>
 				<h1>Memory Match Duel</h1>
 				<small>{me.name}</small>
 			</header>
+
 			<main>
-			<Media query="(min-width: 800px)">
+			<Media query="(min-width: 766px)">
 				{matches =>
 					matches ? (
 						<Switch>
@@ -33,13 +56,17 @@ function App() {
 								)}
 							/>
 							<Route
-								path="/game"
+								path="/game" exact
 								render={props => (
 									<Fragment>
 										<Board {...props} />
 										<PlayerPanel {...props} />
 									</Fragment>
 								)}
+							/>
+							<Route
+								path="/lobby" exact
+								component={Lobby}
 							/>
 						</Switch>
 
@@ -72,6 +99,7 @@ function App() {
 			</main>
 		</div>
 	);
+	}
 }
 
 export default App;

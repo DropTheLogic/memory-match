@@ -1,57 +1,43 @@
-import React, { Component } from 'react';
-import fire from './fire';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-class Main extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			me: props.me
-		}
-		this.myRef = fire.database().ref(`users/${props.me.id}`);
-	}
-
-	componentDidMount() {
-		this.myRef.on('value', snapshot => {
-			let me = snapshot.val();
-			this.setState({ me: {...me} });
-		});
-	}
-
-	componentWillUnmount() {
-		this.myRef.off('value');
-	}
-
-	render() {
-		const imgUrl = `https://api.adorable.io/avatars/${512}/${this.state.me.id}`;
-		return (
-			<section className="main-screen">
-				<div className="user-landing">
-					<h2> - Welcome - </h2>
-					<div className="user-splash">
-						<h2>{this.state.me.name}</h2>
-						<img src={imgUrl} alt={this.state.me.name} />
-					</div>
+const Main = (props) => {
+	const imgUrl = `https://api.adorable.io/avatars/${512}/${props.me.id}`;
+	return (
+		<section className="main-screen">
+			<div className="user-landing">
+				<h2> - Welcome - </h2>
+				<div className="user-splash">
+					<h2>{props.me.name}</h2>
+					<img src={imgUrl} alt={props.me.name} />
 				</div>
+			</div>
 
-				<div className="main-menu">
-					<h3>What would you like to do?</h3>
+			<div className="main-menu">
+				<h3>What would you like to do?</h3>
+				<Link to="/game">
 					<button className="button-create-game">
-						Create Game Room
+						Create New Game Room
 					</button>
+				</Link>
 
+				<Link to="/lobby">
 					<button className="button-join-game">
 						Join Game
 					</button>
+				</Link>
 
+				<Link className="isDisabled">
 					<button className="button-create-user">
 						Randomize My User
 					</button>
-				</div>
+				</Link>
+			</div>
 
 
-			</section>
-		);
-	}
+		</section>
+	);
+
 }
 
 export default Main;

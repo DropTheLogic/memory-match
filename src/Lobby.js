@@ -53,7 +53,7 @@ class Lobby extends Component {
 			<section className="lobby">
 				<h2>Lobby</h2>
 
-				<button className="button-create-game" onClick={() => this.addRoom()}>Create Game Room</button>
+				<button className="button-create-game" onClick={() => this.addRoom()}>Create New Game Room</button>
 
 				<div className="games-container">
 					<h3>Game Rooms</h3>
@@ -70,7 +70,7 @@ class Lobby extends Component {
 									<div>Start one now:</div>
 								</h2>
 								<button className="button-create-game pulsing">
-									Create Game Room
+									Create New Game Room
 								</button>
 							</div>
 
