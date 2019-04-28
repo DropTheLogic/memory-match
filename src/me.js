@@ -9,7 +9,8 @@ let me = {
 	name,
 	imgSize: 64,
 	createdAt: new Date().toISOString(),
-	status: 'awaiting'
+	status: 'awaiting',
+	matches: 0
 };
 
 const init = async () => {

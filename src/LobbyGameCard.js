@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { putMeInRoom } from './dbUpdates';
 
 const LobbyGameCard = (props) => {
 	const { id, status } = props.gameData;
@@ -13,11 +15,14 @@ const LobbyGameCard = (props) => {
 			</div>
 			{
 				status === 'full' ? null :
-				<button
-					type="button"
-					className="button-join-game">
-					Join!
-				</button>
+				<Link to="/game">
+					<button
+						type="button"
+						className="button-join-game"
+						onClick={() => putMeInRoom(id, false)}>
+						Join!
+					</button>
+				</Link>
 			}
 
 		</div>

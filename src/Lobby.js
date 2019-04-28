@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import fire from './fire';
-import { generateRoomId } from './utils/helperFuncs';
+import { addRoom } from './dbUpdates';
 
 import LobbyPlayerCard from './LobbyPlayerCard';
 import LobbyGameCard from './LobbyGameCard';
@@ -33,18 +33,6 @@ class Lobby extends Component {
 		this.usersRef.off('value');
 	}
 
-	addRoom() {
-		const db = fire.database();
-		const roomId = generateRoomId();
-
-		db.ref(`rooms/${roomId}`).set({
-			id: roomId,
-			createdAt: new Date().toISOString(),
-			testing: '123',
-			gameState: 'waiting for player'
-		});
-	}
-
 	render() {
 		const { rooms, users } = this.state;
 		const roomKeys = Object.keys(this.state.rooms);
@@ -53,7 +41,7 @@ class Lobby extends Component {
 			<section className="lobby">
 				<h2>Lobby</h2>
 
-				<button className="button-create-game" onClick={() => this.addRoom()}>Create New Game Room</button>
+				<button className="button-create-game" onClick={() => addRoom()}>Create New Game Room</button>
 
 				<div className="games-container">
 					<h3>Game Rooms</h3>

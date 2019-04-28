@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Media from 'react-media';
 import fire from './fire';
 
@@ -60,7 +60,10 @@ class App extends Component {
 								render={props => (
 									<Fragment>
 										<Board {...props} />
-										<PlayerPanel {...props} />
+										<PlayerPanel {...props}
+											me={this.state.me}
+											opponent={{}}
+											roomId={this.state.me.roomId} />
 									</Fragment>
 								)}
 							/>
@@ -88,7 +91,10 @@ class App extends Component {
 								render={props => (
 									<Fragment>
 										<Board {...props} />
-										<PlayerPanel {...props} />
+										<PlayerPanel {...props}
+											me={this.state.me}
+											opponent={this.state.me.opponentId}
+											roomId={this.state.me.roomId} />
 									</Fragment>
 								)}
 							/>

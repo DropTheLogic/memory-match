@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { addRoom } from './dbUpdates';
 
 const Main = (props) => {
 	const imgUrl = `https://api.adorable.io/avatars/${512}/${props.me.id}`;
@@ -16,7 +17,7 @@ const Main = (props) => {
 			<div className="main-menu">
 				<h3>What would you like to do?</h3>
 				<Link to="/game">
-					<button className="button-create-game">
+					<button className="button-create-game" onClick={() => addRoom()}>
 						Create New Game Room
 					</button>
 				</Link>

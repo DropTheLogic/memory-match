@@ -208,6 +208,16 @@ section.players {
 	box-sizing: border-box;
 }
 
+.awaiting-user {
+	padding: 12px;
+}
+
+.awaiting-user img {
+	border-radius: 12px;
+	opacity: 0.3;
+	box-shadow: 2px 2px #111;
+}
+
 .card-name {
 	flex: 1;
 	margin: 12px;
@@ -324,7 +334,23 @@ button:active {
 
 @keyframes pulse {
 	50% {
-		box-shadow: 0 0 6px 2px rgb(8, 175, 64);
+		box-shadow: 0 0 6px 2px #333;
+	}
+}
+
+.spinning {
+	animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	50% {
+		transform: rotate(180deg);
+	}
+	100% {
+		transform: rotate(360deg);
 	}
 }
 

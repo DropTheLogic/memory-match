@@ -26,21 +26,37 @@ class UserCard extends Component {
 	}
 
 	render() {
-		const { name, imgSize: size } = this.props;
-		// TODO: this should be brought in from the server
-		const imgUrl = `https://api.adorable.io/avatars/${size * 2}/${removeSpaces(name)}`;
-		return (
-			<div className="user-card">
-				<picture>
-					<img
-						src={imgUrl}
-						alt={`Avatar for ${name}`}/>
-				</picture>
-				<h3 className="card-name">{name}</h3>
-				<div className="card-divider" />
-				<div className="score">Matches: 6</div>
-			</div>
-		);
+		if (this.props.user.name) {
+			const { user, imgSize: size } = this.props;
+			const { name, id, matches } = user;
+			const imgUrl = `https://api.adorable.io/avatars/${size * 2}/${id}`;
+			return (
+				<div className="user-card">
+					<picture>
+						<img
+							src={imgUrl}
+							alt={`Avatar for ${name}`}/>
+					</picture>
+					<h3 className="card-name">{name}</h3>
+					<div className="card-divider" />
+					<div className="score">Matches: {matches}</div>
+				</div>
+			);
+		}
+		else {
+			let waitingSrc = `https://api.adorable.io/avatars/64/StillWaiting`;
+			return (
+				<div className="user-card">
+					<div className="awaiting-user">
+						<h3>Awaiting user...</h3>
+						<div className="spinning">
+							<img src={waitingSrc} alt="waiting animation" />
+						</div>
+					</div>
+
+				</div>
+			)
+		}
 	}
 }
 
