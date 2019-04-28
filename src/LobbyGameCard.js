@@ -2,7 +2,7 @@ import React from 'react';
 
 const LobbyGameCard = (props) => {
 	const { id, status } = props.gameData;
-	const statusClass = status === 'full' ? 'ingame' : 'awaiting';
+	const statusClass = status === 'waiting for player' ? 'awaiting' : 'ingame';
 	return (
 		<div className="lobby-game-card">
 			<div className="lobby-game-info">

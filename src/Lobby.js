@@ -9,24 +9,28 @@ class Lobby extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			rooms: [],
-			players: []
+			rooms: {},
+			users: {}
 		}
-		this.roomsRef = fire.database().ref('rooms').orderByKey().limitToLast(100);
+		this.roomsRef = fire.database().ref('rooms').orderByChild('createdAt').limitToLast(100);
+		this.usersRef = fire.database().ref('users').orderByKey().limitToLast(100);
 	}
 
 	componentDidMount() {
-		this.roomsRef.on('child_added', snapshot => {
+		this.roomsRef.on('value', snapshot => {
 			// Update list of rooms when new data hits db
-			let room = { data: snapshot.val(), id: snapshot.key };
-			this.setState({
-				rooms: [room, ...this.state.rooms]
-			});
-		})
+			let rooms = snapshot.val();
+			this.setState({ rooms: {...rooms} });
+		});
+		this.usersRef.on('value', snapshot => {
+			let users = snapshot.val();
+			this.setState({ users: {...users} });
+		});
 	}
 
 	componentWillUnmount() {
-		this.roomsRef.off('child_added');
+		this.roomsRef.off('value');
+		this.usersRef.off('value');
 	}
 
 	addRoom() {
@@ -42,6 +46,9 @@ class Lobby extends Component {
 	}
 
 	render() {
+		const { rooms, users } = this.state;
+		const roomKeys = Object.keys(this.state.rooms);
+		const userKeys = Object.keys(this.state.users);
 		return (
 			<section className="lobby">
 				<h2>Lobby</h2>
@@ -51,9 +58,9 @@ class Lobby extends Component {
 				<h3>Game Rooms</h3>
 				<div className="lobby-list">
 					{
-						this.state.rooms.length > 0 ?
-						this.state.rooms.map(room =>
-							<LobbyGameCard gameData={{id: room.id, status: room.data.gameState}} />
+						roomKeys.length > 0 ?
+						roomKeys.map(key =>
+							<LobbyGameCard key={key} gameData={{id: key, status: rooms[key].gameState}} />
 						)
 						:
 						<div>
@@ -72,8 +79,8 @@ class Lobby extends Component {
 				<h3>Players</h3>
 				<div className="lobby-list">
 					{
-						this.state.players.map(player =>
-							<LobbyPlayerCard player={player} />
+						userKeys.map(key =>
+							<LobbyPlayerCard key={key} player={users[key]} size={48} />
 						)
 					}
 				</div>
