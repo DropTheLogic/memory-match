@@ -131,10 +131,7 @@ header {
 	color: green;
 }
 
-.row {
-	display: flex;
-	width: 100%;
-	justify-content: space-evenly;
+.board {
 	align-items: center
 }
 
@@ -142,7 +139,7 @@ header {
 	position: relative;
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-evenly;
 	width: 72px;
 	height: 72px;
 

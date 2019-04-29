@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import fire from './fire';
 import me from './me';
 
-import Board from './Board';
+import BoardBack from './BoardBack';
 import UserCard from './UserCard';
 
 class GameSpace extends Component {
@@ -78,7 +78,7 @@ class GameSpace extends Component {
 		}
 		else {
 			// If unmounting because I am navigating away, first confirm
-			const navigateAway = window.confirm('Really leave?');
+			let navigateAway = window.confirm('Really leave?');
 			if (navigateAway) {
 				// If I was alone, go ahead and delete room as well
 				if (!this.state.roomData.awayPlayerId) {
@@ -119,7 +119,7 @@ class GameSpace extends Component {
 		}
 		return (
 			<Fragment>
-				<Board />
+				<BoardBack roomId={this.state.roomData.id} />
 
 				<div>RoomID: {roomId}</div>
 				<section className="players">
