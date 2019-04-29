@@ -10,11 +10,11 @@ const LobbyGameCard = (props) => {
 			<div className="lobby-game-info">
 				<h4 className="lobby-game-id">Game Room Code: {id}</h4>
 				<span className={"lobby-game-status " + statusClass}>
-					{status.toUpperCase()}
+					{status && status.toUpperCase()}
 				</span>
 			</div>
 			{
-				status === 'full' ? null :
+				status === 'playing' ? null :
 				<Link to="/game">
 					<button
 						type="button"

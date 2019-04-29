@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import fire from './fire';
 import { addRoom } from './dbUpdates';
 
@@ -41,7 +42,13 @@ class Lobby extends Component {
 			<section className="lobby">
 				<h2>Lobby</h2>
 
-				<button className="button-create-game" onClick={() => addRoom()}>Create New Game Room</button>
+				<Link to="/game">
+					<button
+						className="button-create-game"
+						onClick={() => addRoom()}>
+						Create New Game Room
+					</button>
+				</Link>
 
 				<div className="games-container">
 					<h3>Game Rooms</h3>

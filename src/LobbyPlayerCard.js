@@ -13,7 +13,7 @@ const LobbyPlayerCard = (props) => {
 			<div className="lobby-player-info">
 				<h4 className="lobby-player-name">{name}</h4>
 				<span className={"lobby-player-status " + statusClass}>
-					{status.toUpperCase()}
+					{status && status.toUpperCase()}
 				</span>
 			</div>
 

@@ -16,7 +16,18 @@ let me = {
 const init = async () => {
 	await fire.database().ref(`users/${nameNoSpaces}`).set(me);
 	let myRef = fire.database().ref(`users/${nameNoSpaces}`);
-	myRef.onDisconnect().remove();
+
+	// Delete my own db entry
+	myRef.onDisconnect().remove(() => {
+		// TODO: make this work :()
+		// If I was in a room, update db to move opponenet back to home
+	// 	const roomId = myRef.child('roomId').toString();
+	// 	let roomRef = fire.database().ref(`rooms/${roomId}`);
+	// 	const roomUpdates = {
+	// 		kick: true
+	// 	}
+	// 	roomRef.update(roomUpdates);
+	});
 }
 
 init();

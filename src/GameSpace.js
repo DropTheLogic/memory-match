@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { Redirect } from 'react-router-dom';
 import fire from './fire';
 import me from './me';
 
@@ -60,6 +61,40 @@ class GameSpace extends Component {
 	}
 
 	componentWillUnmount() {
+		// If unmounting because our opponenet already left,
+		// update my data, then destroy room
+		// TODO: This should also fire when the opponent has an onDisconnect.
+		let iWasKicked = this.state.roomData.kick;
+		if (iWasKicked) {
+			alert('Your opponenet has left');
+			const myUpdates = {
+				status: 'awaiting',
+				roomId: null,
+				matches: 0,
+				hosting: false
+			};
+			this.myRef.update(myUpdates);
+			this.roomRef.remove();
+		}
+		else {
+			// If unmounting because I am navigating away,
+			// confirm, then set kick property in db to redirect opponenet
+			const navigateAway = window.confirm('Really leave?');
+			if (navigateAway) {
+				const myUpdates = {
+					status: 'awaiting',
+					roomId: null,
+					matches: 0,
+					hosting: false
+				};
+				const roomUpdates = {
+					kick: true
+				}
+				this.roomRef.update(roomUpdates);
+				this.myRef.update(myUpdates);
+
+			}
+		}
 		if (this.myRef.off) this.myRef.off('value');
 		if (this.opponentRef.off) this.opponentRef.off('value');
 		if (this.roomRef.off) this.roomRef.off('value');
@@ -72,6 +107,10 @@ class GameSpace extends Component {
 		let home = me.hosting ? me : opponent
 		let away = home === me ? opponent : me;
 
+		// If there was a disconnection, go back home
+		if (this.state.roomData.kick === true) {
+			return <Redirect to="/" />
+		}
 		return (
 			<Fragment>
 				<Board />

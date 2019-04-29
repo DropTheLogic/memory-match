@@ -28,7 +28,7 @@ const Main = (props) => {
 					</button>
 				</Link>
 
-				<Link className="isDisabled">
+				<Link to="#" className="isDisabled">
 					<button className="button-create-user">
 						Randomize My User
 					</button>
