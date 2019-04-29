@@ -19,8 +19,29 @@ export function addRoom() {
 
 export async function putMeInRoom(roomId, amHost) {
 	const myData = await db.ref(`users/${me.id}`);
-	myData.update({hosting: amHost, roomId});
+	let myUpdates = {};
+
 	if (!amHost) {
-		db.ref(`rooms/${roomId}`).update({awayPlayerId: me.id});
+		let roomUpdates = {
+			awayPlayerId: me.id,
+			gameState: 'playing'
+		};
+		// Since I'm the second one here, update room gameState to 'in game'
+		db.ref(`rooms/${roomId}`).update(roomUpdates);
+
+		// Update opponent's status as well
+		let opponentRef = db.ref(`rooms/${roomId}/homePlayerId`);
+		opponentRef.on('value', snapshot => {
+			let opponentId = snapshot.val();
+			db.ref(`users/${opponentId}`).update({status: 'in game'});
+		});
+		opponentRef.off('value');
+
+		// Lastly, set my own update
+		myUpdates = {status: 'in game', hosting: amHost, roomId};
 	}
+	else {
+		myUpdates = {hosting: amHost, roomId};
+	}
+	myData.update(myUpdates);
 }

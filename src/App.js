@@ -60,10 +60,7 @@ class App extends Component {
 								render={props => (
 									<Fragment>
 										<Board {...props} />
-										<PlayerPanel {...props}
-											me={this.state.me}
-											opponent={{}}
-											roomId={this.state.me.roomId} />
+										<PlayerPanel {...props} />
 									</Fragment>
 								)}
 							/>
@@ -91,10 +88,7 @@ class App extends Component {
 								render={props => (
 									<Fragment>
 										<Board {...props} />
-										<PlayerPanel {...props}
-											me={this.state.me}
-											opponent={this.state.me.opponentId}
-											roomId={this.state.me.roomId} />
+										<PlayerPanel {...props} />
 									</Fragment>
 								)}
 							/>
