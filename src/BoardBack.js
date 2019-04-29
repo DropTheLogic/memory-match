@@ -13,14 +13,16 @@ class Board extends Component {
 			// Gameboard width & height. Must be divisible by 2
 			size: props.size || 4,
 			cellSize: props.cellSize || 72,
-			tileData: [],
-			uniqueTiles: [],
-			pressed: [],
+			tileData: {},
+			pressedA: -1,
+			pressedB: -1,
 			isFrozen: false
 		}
 
 		this.randomizeNewBoard = this.randomizeNewBoard.bind(this);
 		this.press = this.press.bind(this);
+
+		this.boardRef = {};
 	}
 
 	initializeGrid(size) {
@@ -78,20 +80,44 @@ class Board extends Component {
 			}
 		}
 
-		this.setState(() => ({ tileData: tiles }), this.preloadImages(uniqueTiles));
+		// Turn array into object
+		tiles = tiles.reduce((obj, tile, i) => {
+			obj[i] = tile;
+			return obj;
+		}, {});
+
+		this.setState(() => ({ tileData: tiles }), () => {
+			// Preload images locally
+			this.preloadImages(uniqueTiles);
+
+			// Add board data to database
+			const db = fire.database();
+			const newBoardKey = db.ref().child('boards').push().key;
+			db.ref(`boards/${newBoardKey}`).set({
+				id: newBoardKey,
+				roomId: this.props.roomId || {},
+				...this.state
+			});
+			// Establish listening point to db
+			this.boardRef = db.ref(`boards/${newBoardKey}`);
+			this.boardRef.on('value', snapshot => {
+				let boardState = snapshot.val();
+				// Update local state when db updates
+				this.setState(boardState);
+			});
+			this.setState({boardId: newBoardKey});
+		});
 	}
 
 	componentDidMount() {
-		this.randomizeNewBoard(); // This should be handed from the server
+		// This should be handed from the server
 		// But since it's not, we'll hand it up here
-		const db = fire.database();
-		const newBoardKey = db.ref().child('boards').push().key;
-		db.ref(`boards/${newBoardKey}`).set({
-			id: newBoardKey,
-			roomId: this.props.roomId || {},
-			...this.state
-		});
-		this.setState({boardId: newBoardKey});
+		// This will create a newly randomized board,
+		// set it on to local state, then push local state
+		// up to database. Finally, it will establish
+		// a connection to the database, where the database
+		// will be updated, and then local state will reflect that change.
+		this.randomizeNewBoard();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -107,11 +133,11 @@ class Board extends Component {
 		e.preventDefault();
 
 		// Copy board state
-		let tileData = [...this.state.tileData];
+		let tileData = {...this.state.tileData};
 
 		// Target pick, when one tile is already awaiting a match
-		if (this.state.pressed.length > 0 && !tileData[index].isPressed) {
-			const targetIndex = this.state.pressed[0];
+		if (this.state.pressedA >= 0 && !tileData[index].isPressed) {
+			const targetIndex = this.state.pressedA;
 			const tileGuess = tileData[index];
 			const tileTarget = tileData[targetIndex];
 
@@ -121,11 +147,9 @@ class Board extends Component {
 				tileGuess.isPressed = false;
 				tileTarget.isCaptured = true;
 				tileTarget.isPressed = false;
-				this.setState({
-					pressed: [],
-					tileData,
-					isFrozen: false
-				});
+
+				this.boardRef.update({pressedA: -1, pressedB: -1, tileData, isFrozen: false});
+
 			}
 			else { // If no match was found
 				// Callback: flip both tiles back over automatically
@@ -133,29 +157,22 @@ class Board extends Component {
 					tileTarget.isPressed = false;
 					tileGuess.isPressed = false;
 
-					this.setState({
-						pressed: [],
-						tileData,
-						isFrozen: false
-					})
+					this.boardRef.update({pressedA: -1, pressedB: -1, tileData, isFrozen: false});
 				}, 500);
 
 				// Initially, flip over second/unmatching tile
 				tileData[index].isPressed = true;
-				this.setState((state) => ({
-					pressed: [...state.pressed, index],
+				this.boardRef.update({
+					pressedB: index,
 					tileData,
 					isFrozen: true
-				}), delayed()); // Then callback to flip unmatched tiles back
+				}).then(() => delayed()); // Then callback to flip unmatched tiles back
 			}
 		}
 		// First pick, when no tiles are currently pressed
 		else if (!tileData[index].isPressed) {
 			tileData[index].isPressed = true;
-			this.setState({
-				pressed: [index],
-				tileData
-			});
+			this.boardRef.update({pressedA: index, tileData });
 		}
 	}
 
@@ -164,7 +181,7 @@ class Board extends Component {
 			<div>
 				<div className="board">
 				{
-					this.state.tileData.map((tile, i) =>
+					Object.values(this.state.tileData).map((tile, i) =>
 						<Cell
 							key={`row${Math.floor(i / 4)}col${i % 4}`}
 							cell={tile}
