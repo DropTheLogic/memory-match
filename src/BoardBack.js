@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { getRandomInt, getRandomName, removeSpaces, debounce } from './utils/helperFuncs';
+import me from './me';
 import fire from './fire';
 import Cell from './Cell';
 
@@ -21,8 +22,6 @@ class Board extends Component {
 
 		this.randomizeNewBoard = this.randomizeNewBoard.bind(this);
 		this.press = this.press.bind(this);
-
-		this.boardRef = {};
 	}
 
 	initializeGrid(size) {
@@ -110,20 +109,45 @@ class Board extends Component {
 	}
 
 	componentDidMount() {
-		// This should be handed from the server
-		// But since it's not, we'll hand it up here
-		// This will create a newly randomized board,
-		// set it on to local state, then push local state
-		// up to database. Finally, it will establish
-		// a connection to the database, where the database
-		// will be updated, and then local state will reflect that change.
-		this.randomizeNewBoard();
+		const db = fire.database();
+		this.myRef = db.ref(`users/${me.id}`);
+		this.myRef.on('value', snapshot => {
+			let myInfo = snapshot.val();
+			const hosting = myInfo.hosting;
+
+			// if (hosting) {
+				// This should be handed from the server
+				// But since it's not, we'll hand it up here
+				// This will create a newly randomized board,
+				// set it on to local state, then push local state
+				// up to database. Finally, it will establish
+				// a connection to the database, where the database
+				// will be updated, and then local state will reflect
+				// that change.
+				this.randomizeNewBoard();
+			// }
+		});
 	}
 
 	componentDidUpdate(prevProps) {
 		// Update room id when it comes in
 		if (this.props.roomId && this.props.roomId !== prevProps.roomId) {
 			const db = fire.database();
+
+			// if (!this.boardRef) {
+			// 	db.ref(`rooms/${this.props.roomId}`).once('value', snapshot => {
+			// 		let room = snapshot.val();
+			// 		let boardId = room.boardId;
+			// 		// Establish listening point to db
+			// 		this.boardRef = db.ref(`boards/${boardId}`);
+			// 		this.boardRef.on('value', snapshot => {
+			// 			let boardState = snapshot.val();
+			// 			// Update local state when db updates
+			// 			this.setState(boardState);
+			// 		});
+			// 	})
+			// }
+
 			db.ref(`rooms/${this.props.roomId}/boardId`).set(this.state.boardId);
 			db.ref(`boards/${this.state.boardId}/roomId`).set(this.props.roomId);
 		}
