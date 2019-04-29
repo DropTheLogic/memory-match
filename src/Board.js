@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { getRandomInt, getRandomName, removeSpaces, debounce } from './utils/helperFuncs';
+import fire from './fire';
 import Cell from './Cell';
+
+const functions = fire.functions();
+fire.functions().useFunctionsEmulator('http://localhost:3000');
 
 class Board extends Component {
 	constructor(props) {

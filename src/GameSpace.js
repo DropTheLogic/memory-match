@@ -77,22 +77,28 @@ class GameSpace extends Component {
 			this.roomRef.remove();
 		}
 		else {
-			// If unmounting because I am navigating away,
-			// confirm, then set kick property in db to redirect opponenet
+			// If unmounting because I am navigating away, first confirm
 			const navigateAway = window.confirm('Really leave?');
 			if (navigateAway) {
+				// If I was alone, go ahead and delete room as well
+				if (!this.state.roomData.awayPlayerId) {
+					this.roomRef.remove();
+				}
+				else {
+					// Otherwise set kick property in db to redirect opponenet
+					const roomUpdates = {
+						kick: true
+					}
+					this.roomRef.update(roomUpdates);
+				}
+				// Update my info
 				const myUpdates = {
 					status: 'awaiting',
 					roomId: null,
 					matches: 0,
 					hosting: false
 				};
-				const roomUpdates = {
-					kick: true
-				}
-				this.roomRef.update(roomUpdates);
 				this.myRef.update(myUpdates);
-
 			}
 		}
 		if (this.myRef.off) this.myRef.off('value');

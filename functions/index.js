@@ -1,8 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const axios = require('axios');
 admin.initializeApp();
-firebase.functions().useFunctionsEmulator('http://localhost:3000');
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -47,12 +45,12 @@ exports.generateTiles = functions.https.onRequest((req, res) => {
 /**
  * Returns random three string "name"
  */
-exports.getRandomName = functions.https.onCall(async (data, context) => {
+exports.getRandomName = functions.https.onCall((data, context) => {
 	const adverbLength = 401;
 	const adjLength = 1133;
 	const nounLength = 877;
-	let adverb = await axios.get(`https://memory-match-app.firebaseio.com/api/words/adverbs/data/${getRandomInt(0, adverbLength)}`);
-	console.log(adverb);
+	// let adverb = axios.get(`https://memory-match-app.firebaseio.com/api/words/adverbs/data/${getRandomInt(0, adverbLength)}`);
+	// console.log(adverb);
 	// let adj = adjectives[getRandomInt(0, adjLength)];
 	// let noun = nouns[getRandomInt(0, nounLength)];
 	// return `${titleCase(adverb)} ${titleCase(adj)} ${titleCase(noun)}`;
