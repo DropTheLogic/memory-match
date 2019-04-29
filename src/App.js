@@ -3,9 +3,8 @@ import { Route, Switch } from 'react-router-dom';
 import Media from 'react-media';
 import fire from './fire';
 
-import Board from './Board';
+import GameSpace from './GameSpace';
 import Lobby from './Lobby';
-import PlayerPanel from './Players';
 import Main from './Main';
 
 import me from './me';
@@ -57,12 +56,7 @@ class App extends Component {
 							/>
 							<Route
 								path="/game" exact
-								render={props => (
-									<Fragment>
-										<Board {...props} />
-										<PlayerPanel {...props} />
-									</Fragment>
-								)}
+								component={GameSpace}
 							/>
 							<Route
 								path="/lobby" exact
@@ -85,12 +79,7 @@ class App extends Component {
 							/>
 							<Route
 								path="/game"
-								render={props => (
-									<Fragment>
-										<Board {...props} />
-										<PlayerPanel {...props} />
-									</Fragment>
-								)}
+								component={GameSpace}
 							/>
 						</Switch>
 					)

@@ -2,9 +2,10 @@ import React, { Component, Fragment } from 'react';
 import fire from './fire';
 import me from './me';
 
+import Board from './Board';
 import UserCard from './UserCard';
 
-class PlayerPanel extends Component {
+class GameSpace extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -73,15 +74,17 @@ class PlayerPanel extends Component {
 
 		return (
 			<Fragment>
-			<div>RoomID: {roomId}</div>
-			<section className="players">
-				<UserCard user={home} imgSize={64} />
-				<h2 className="vs-panel">VS</h2>
-				<UserCard user={away} imgSize={64} />
-			</section>
+				<Board />
+
+				<div>RoomID: {roomId}</div>
+				<section className="players">
+					<UserCard user={home} imgSize={64} />
+					<h2 className="vs-panel">VS</h2>
+					<UserCard user={away} imgSize={64} />
+				</section>
 			</Fragment>
 		);
 	}
 }
 
-export default PlayerPanel;
+export default GameSpace;
