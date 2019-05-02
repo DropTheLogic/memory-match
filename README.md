@@ -1,3 +1,16 @@
+# Memory Match Duel
+-------------------
+![screenshot](/docs/Memory_Match_Screens.jpg)
+Memory Match Duel is an online, two-player board game. Users can connect from their phone or browser. They will be auto-generated a user name and avatar and given the option to create a game room or join a game room (if one exists).
+
+## Gameplay
+The gameboard consists of tiles, randomly generated, which are dealt blank side up, face side down. Users will take turns flipping over pieces of the board, two tiles per turn. If a user matches two tiles with their turn, they have "captured" those tiles, and are scores for a match. When all the tiles have been matched, the user with the most matches wins. The options to rematch should be presented at the end of each match.
+
+## Tools
+This app was built using React and Firebase, with images from the [Adorable Avatars](http://avatars.adorable.io/) API.
+
+-------------------
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
