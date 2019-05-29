@@ -115,7 +115,7 @@ class Board extends Component {
 			let myInfo = snapshot.val();
 			const hosting = myInfo.hosting;
 
-			// if (hosting) {
+			if (hosting) {
 				// This should be handed from the server
 				// But since it's not, we'll hand it up here
 				// This will create a newly randomized board,
@@ -125,7 +125,7 @@ class Board extends Component {
 				// will be updated, and then local state will reflect
 				// that change.
 				this.randomizeNewBoard();
-			// }
+			}
 		});
 	}
 
@@ -134,22 +134,23 @@ class Board extends Component {
 		if (this.props.roomId && this.props.roomId !== prevProps.roomId) {
 			const db = fire.database();
 
-			// if (!this.boardRef) {
-			// 	db.ref(`rooms/${this.props.roomId}`).once('value', snapshot => {
-			// 		let room = snapshot.val();
-			// 		let boardId = room.boardId;
-			// 		// Establish listening point to db
-			// 		this.boardRef = db.ref(`boards/${boardId}`);
-			// 		this.boardRef.on('value', snapshot => {
-			// 			let boardState = snapshot.val();
-			// 			// Update local state when db updates
-			// 			this.setState(boardState);
-			// 		});
-			// 	})
-			// }
-
-			db.ref(`rooms/${this.props.roomId}/boardId`).set(this.state.boardId);
-			db.ref(`boards/${this.state.boardId}/roomId`).set(this.props.roomId);
+			if (!this.boardRef) {
+				db.ref(`rooms/${this.props.roomId}`).once('value', snapshot => {
+					let room = snapshot.val();
+					let boardId = room.boardId;
+					// Establish listening point to db
+					this.boardRef = db.ref(`boards/${boardId}`);
+					this.boardRef.on('value', snapshot => {
+						let boardState = snapshot.val();
+						// Update local state when db updates
+						this.setState(boardState);
+					});
+				})
+			}
+			else {
+				db.ref(`rooms/${this.props.roomId}/boardId`).set(this.state.boardId);
+				db.ref(`boards/${this.state.boardId}/roomId`).set(this.props.roomId);
+			}
 		}
 	}
 

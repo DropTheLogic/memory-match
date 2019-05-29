@@ -41,7 +41,6 @@ class GameSpace extends Component {
 							// the roomData.homePlayerId already
 							if ((this.state.me.hosting && this.state.roomData.awayPlayerId)
 								|| !this.state.me.hosting) {
-									console.log('this.state.roomData:', this.state.roomData)
 								let opponentId = this.state.me.hosting ?
 									this.state.roomData.awayPlayerId :
 									this.state.roomData.homePlayerId
