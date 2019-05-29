@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Link } from 'react-router-dom';
 import Media from 'react-media';
 import fire from './fire';
 
@@ -37,7 +37,10 @@ class App extends Component {
 		<div className="App">
 			<header>
 				<h1>Memory Match Duel</h1>
-				<small>{me.name}</small>
+				<small className="subhead">
+					<span>{me.name}</span>
+					<Link to="/"><button>HOME</button></Link>
+				</small>
 			</header>
 
 			<main>
