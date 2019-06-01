@@ -115,7 +115,7 @@ class Board extends Component {
 			let myInfo = snapshot.val();
 			const hosting = myInfo.hosting;
 
-			if (hosting) {
+			if (hosting && myInfo.status === 'awaiting') {
 				// This should be handed from the server
 				// But since it's not, we'll hand it up here
 				// This will create a newly randomized board,
@@ -175,6 +175,11 @@ class Board extends Component {
 
 				this.boardRef.update({pressedA: -1, pressedB: -1, tileData, isFrozen: false});
 
+				// Update my matches (score)
+				this.myRef.once('value', snapshot => {
+					let me = snapshot.val();
+					this.myRef.update({ matches:  me.matches + 1 });
+				});
 			}
 			else { // If no match was found
 				// Callback: flip both tiles back over automatically

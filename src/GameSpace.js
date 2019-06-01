@@ -50,7 +50,8 @@ class GameSpace extends Component {
 								this.opponentRef.on('value', snapshot => {
 									let opponent = snapshot.val();
 									this.setState({ opponent })
-								})
+								});
+								this.myRef.update({status: 'in game'});
 							}
 						});
 					});
