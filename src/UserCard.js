@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { removeSpaces } from './utils/helperFuncs';
 
 class UserCard extends Component {
 	constructor(props) {
@@ -13,8 +14,8 @@ class UserCard extends Component {
 	render() {
 		if (this.props.user.name) {
 			const { user, imgSize: size } = this.props;
-			const { name, id, matches } = user;
-			const imgUrl = `https://api.adorable.io/avatars/${size * 2}/${id}`;
+			const { name, matches } = user;
+			const imgUrl = `https://api.adorable.io/avatars/${size * 2}/${removeSpaces(name)}`;
 			return (
 				<div className="user-card">
 					<picture>

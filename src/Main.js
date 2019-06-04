@@ -1,16 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { addRoom } from './dbUpdates';
+import { addRoom, changeMyName } from './dbUpdates';
+import { removeSpaces } from './utils/helperFuncs';
 
 const Main = (props) => {
-	const imgUrl = `https://api.adorable.io/avatars/${512}/${props.me.id}`;
+	const name = props.me.name || '';
+	const imgUrl = `https://api.adorable.io/avatars/${512}/${removeSpaces(name)}`;
 	return (
 		<section className="main-screen">
 			<div className="user-landing">
 				<h2> - Welcome - </h2>
 				<div className="user-splash">
-					<h2>{props.me.name}</h2>
-					<img src={imgUrl} alt={props.me.name} />
+					<h2>{name}</h2>
+					<img src={imgUrl} alt={name} />
 				</div>
 			</div>
 
@@ -28,8 +30,8 @@ const Main = (props) => {
 					</button>
 				</Link>
 
-				<Link to="#" className="isDisabled">
-					<button className="button-create-user">
+				<Link to="#">
+					<button className="button-create-user" onClick={() => changeMyName()}>
 						Randomize My User
 					</button>
 				</Link>

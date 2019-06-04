@@ -33,6 +33,7 @@ class App extends Component {
 	}
 
 	render() {
+	let { me } = this.state;
 	return (
 		<div className="App">
 			<header>

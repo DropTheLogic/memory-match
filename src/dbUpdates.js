@@ -1,5 +1,5 @@
 import fire from './fire';
-import { generateRoomId } from './utils/helperFuncs';
+import { generateRoomId, getRandomName } from './utils/helperFuncs';
 import me from './me';
 
 const db = fire.database();
@@ -43,5 +43,13 @@ export async function putMeInRoom(roomId, amHost) {
 	else {
 		myUpdates = {hosting: amHost, roomId};
 	}
+	myData.update(myUpdates);
+}
+
+export async function changeMyName(string = '') {
+	const myData = await db.ref(`users/${me.id}`);
+	let name = string ? string : getRandomName();
+	let myUpdates = { name };
+
 	myData.update(myUpdates);
 }

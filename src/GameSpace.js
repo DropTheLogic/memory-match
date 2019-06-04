@@ -101,7 +101,7 @@ class GameSpace extends Component {
 				this.myRef.update(myUpdates);
 			}
 		}
-		if (this.myRef.off) this.myRef.off('value');
+		// if (this.myRef.off) this.myRef.off('value');
 		if (this.opponentRef.off) this.opponentRef.off('value');
 		if (this.roomRef.off) this.roomRef.off('value');
 	}
