@@ -83,6 +83,9 @@ class GameSpace extends Component {
 				// If I was alone, go ahead and delete room as well
 				if (!this.state.roomData.awayPlayerId) {
 					this.roomRef.remove();
+					// And delete the board associated with the room too
+					let board = fire.database().ref(`boards/${this.state.roomData.boardId}`);
+					board.remove();
 				}
 				else {
 					// Otherwise set kick property in db to redirect opponenet
