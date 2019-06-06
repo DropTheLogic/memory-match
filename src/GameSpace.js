@@ -75,6 +75,8 @@ class GameSpace extends Component {
 			};
 			this.myRef.update(myUpdates);
 			this.roomRef.remove();
+			let board = fire.database().ref(`boards/${this.state.roomData.boardId}`);
+			board.remove();
 		}
 		else {
 			// If unmounting because I am navigating away, first confirm
