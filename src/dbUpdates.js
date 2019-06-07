@@ -11,6 +11,7 @@ export function addRoom() {
 		id: roomId,
 		createdAt: new Date().toISOString(),
 		gameState: 'waiting for player',
+		turn: 'solo play',
 		homePlayerId: me.id
 	}).then(() => {
 		putMeInRoom(roomId, true);
@@ -24,7 +25,8 @@ export async function putMeInRoom(roomId, amHost) {
 	if (!amHost) {
 		let roomUpdates = {
 			awayPlayerId: me.id,
-			gameState: 'playing'
+			gameState: 'playing',
+			turn: 'home'
 		};
 		// Since I'm the second one here, update room gameState to 'in game'
 		db.ref(`rooms/${roomId}`).update(roomUpdates);

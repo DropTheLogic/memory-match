@@ -115,7 +115,7 @@ class Board extends Component {
 			let myInfo = snapshot.val();
 			const hosting = myInfo.hosting;
 
-			if (hosting && myInfo.status === 'awaiting') {
+			if (hosting && !this.state.tileData.hasOwnProperty('0')) {
 				// This should be handed from the server
 				// But since it's not, we'll hand it up here
 				// This will create a newly randomized board,
@@ -180,6 +180,8 @@ class Board extends Component {
 					let me = snapshot.val();
 					this.myRef.update({ matches:  me.matches + 1 });
 				});
+				// Advance turn to next player
+				if (!this.props.soloPlay) this.props.advanceTurn();
 			}
 			else { // If no match was found
 				// Callback: flip both tiles back over automatically
@@ -188,6 +190,8 @@ class Board extends Component {
 					tileGuess.isPressed = false;
 
 					this.boardRef.update({pressedA: -1, pressedB: -1, tileData, isFrozen: false});
+					// Advance turn to next player
+					if (!this.props.soloPlay) this.props.advanceTurn();
 				}, 500);
 
 				// Initially, flip over second/unmatching tile
@@ -218,7 +222,7 @@ class Board extends Component {
 							size={this.state.cellSize}
 							position={i}
 							isFrozen={this.state.isFrozen}
-							press={this.press}/>
+							press={this.props.myTurn || this.props.soloPlay ? this.press : () => {}}/>
 					)
 				}
 				</div>

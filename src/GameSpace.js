@@ -18,6 +18,13 @@ class GameSpace extends Component {
 		this.myRef = {};
 		this.opponentRef = {};
 		this.roomRef = {};
+
+		this.advanceTurn = this.advanceTurn.bind(this);
+	}
+
+	advanceTurn() {
+		let currentTurn = this.state.roomData.turn;
+		this.roomRef.update({turn: currentTurn === 'home' ? 'away' : 'home'});
 	}
 
 	// I'm so sorry to anyone who sees this...
@@ -113,10 +120,13 @@ class GameSpace extends Component {
 
 	render() {
 		let { me, opponent } = this.state;
+		let { turn } = this.state.roomData;
 		let roomId = (this.state.roomData.id) ? this.state.roomData.id : 'None set!';
 		opponent = (opponent.name) ? opponent : {};
 		let home = me.hosting ? me : opponent
 		let away = home === me ? opponent : me;
+		let myTurn = (turn === 'home' && me === home) || (turn === 'away' && me === away);
+		let soloPlay = turn === 'solo play';
 
 		// If there was a disconnection, go back home
 		if (this.state.roomData.kick === true) {
@@ -124,9 +134,14 @@ class GameSpace extends Component {
 		}
 		return (
 			<Fragment>
-				<BoardBack roomId={this.state.roomData.id} />
+				<BoardBack
+					roomId={this.state.roomData.id}
+					advanceTurn={this.advanceTurn}
+					myTurn={myTurn}
+					soloPlay={soloPlay} />
 
 				<div>RoomID: {roomId}</div>
+				<div>{soloPlay ? 'FREE PLAY' : (myTurn ? 'Your turn!' : 'Wait...')}</div>
 				<section className="players">
 					<UserCard user={home} imgSize={64} />
 					<h2 className="vs-panel">VS</h2>
