@@ -210,6 +210,10 @@ section.players {
 	box-sizing: border-box;
 }
 
+.myTurn {
+	box-shadow: 0 0 8px 2px #999;
+}
+
 .awaiting-user {
 	padding: 12px;
 }

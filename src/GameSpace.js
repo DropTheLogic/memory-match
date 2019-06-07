@@ -143,9 +143,9 @@ class GameSpace extends Component {
 				<div>RoomID: {roomId}</div>
 				<div>{soloPlay ? 'FREE PLAY' : (myTurn ? 'Your turn!' : 'Wait...')}</div>
 				<section className="players">
-					<UserCard user={home} imgSize={64} />
+					<UserCard user={home} imgSize={64} myTurn={myTurn && home === me} />
 					<h2 className="vs-panel">VS</h2>
-					<UserCard user={away} imgSize={64} />
+					<UserCard user={away} imgSize={64} myTurn={myTurn && away === me} />
 				</section>
 			</Fragment>
 		);

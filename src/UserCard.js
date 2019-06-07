@@ -13,11 +13,11 @@ class UserCard extends Component {
 
 	render() {
 		if (this.props.user.name) {
-			const { user, imgSize: size } = this.props;
+			const { user, myTurn, imgSize: size } = this.props;
 			const { name, matches } = user;
 			const imgUrl = `https://api.adorable.io/avatars/${size * 2}/${removeSpaces(name)}`;
 			return (
-				<div className="user-card">
+				<div className={`user-card${myTurn ? ' myTurn' : ''}`}>
 					<picture>
 						<img
 							src={imgUrl}
