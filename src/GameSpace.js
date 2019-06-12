@@ -12,7 +12,8 @@ class GameSpace extends Component {
 		this.state = {
 			me: {},
 			opponent: {},
-			roomData: {}
+			roomData: {},
+			requestingNewBoard: false
 		}
 
 		this.myRef = {};
@@ -20,11 +21,18 @@ class GameSpace extends Component {
 		this.roomRef = {};
 
 		this.advanceTurn = this.advanceTurn.bind(this);
+		this.requestNewBoard = this.requestNewBoard.bind(this);
 	}
 
 	advanceTurn() {
 		let currentTurn = this.state.roomData.turn;
 		this.roomRef.update({turn: currentTurn === 'home' ? 'away' : 'home'});
+	}
+
+	requestNewBoard() {
+		this.setState(() => ({requestingNewBoard: true}));
+		this.myRef.update({ matches: 0 });
+		if (this.opponentRef.update) this.opponentRef.update({ matches: 0 });
 	}
 
 	// I'm so sorry to anyone who sees this...
@@ -118,6 +126,12 @@ class GameSpace extends Component {
 		if (this.roomRef.off) this.roomRef.off('value');
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if (this.state.requestingNewBoard && !prevState.requestingNewBoard) {
+			this.setState({requestingNewBoard: false});
+		}
+	}
+
 	render() {
 		let { me, opponent } = this.state;
 		let { turn } = this.state.roomData;
@@ -127,6 +141,7 @@ class GameSpace extends Component {
 		let away = home === me ? opponent : me;
 		let myTurn = (turn === 'home' && me === home) || (turn === 'away' && me === away);
 		let soloPlay = turn === 'solo play';
+		let totalMatches = soloPlay ? home.matches : home.matches + away.matches;
 
 		// If there was a disconnection, go back home
 		if (this.state.roomData.kick === true) {
@@ -138,10 +153,15 @@ class GameSpace extends Component {
 					roomId={this.state.roomData.id}
 					advanceTurn={this.advanceTurn}
 					myTurn={myTurn}
-					soloPlay={soloPlay} />
+					soloPlay={soloPlay}
+					resetBoard={this.state.requestingNewBoard} />
 
-				<div>RoomID: {roomId}</div>
-				<div>{soloPlay ? 'FREE PLAY' : (myTurn ? 'Your turn!' : 'Wait...')}</div>
+				<section className="game-details">
+					<div>RoomID: {roomId}</div>
+					<div>{soloPlay ? 'FREE PLAY' : (myTurn ? 'Your turn!' : 'Wait...')}</div>
+					{totalMatches === 8 ? <div>Rematch?<button onClick={() => this.requestNewBoard()}>Play Again</button></div> : null}
+				</section>
+
 				<section className="players">
 					<UserCard user={home} imgSize={64} myTurn={myTurn && home === me} />
 					<h2 className="vs-panel">VS</h2>

@@ -93,10 +93,12 @@ class Board extends Component {
 			const db = fire.database();
 			const newBoardKey = db.ref().child('boards').push().key;
 			db.ref(`boards/${newBoardKey}`).set({
+				...this.state,
 				id: newBoardKey,
+				boardId: null,
 				roomId: this.props.roomId || {},
-				...this.state
 			});
+			if (this.props.roomId) db.ref(`rooms/${this.props.roomId}/boardId`).set(newBoardKey);
 			// Establish listening point to db
 			this.boardRef = db.ref(`boards/${newBoardKey}`);
 			this.boardRef.on('value', snapshot => {
@@ -106,6 +108,12 @@ class Board extends Component {
 			});
 			this.setState({boardId: newBoardKey});
 		});
+	}
+
+	resetBoard() {
+		this.boardRef.off();
+		this.boardRef.remove();
+		this.randomizeNewBoard();
 	}
 
 	componentDidMount() {
@@ -134,6 +142,8 @@ class Board extends Component {
 		if (this.props.roomId && this.props.roomId !== prevProps.roomId) {
 			const db = fire.database();
 
+			// If I'm away (the second player here), sync board from db
+			// and listen for updates
 			if (!this.boardRef) {
 				db.ref(`rooms/${this.props.roomId}`).once('value', snapshot => {
 					let room = snapshot.val();
@@ -145,12 +155,29 @@ class Board extends Component {
 						// Update local state when db updates
 						this.setState(boardState);
 					});
-				})
+				});
 			}
 			else {
 				db.ref(`rooms/${this.props.roomId}/boardId`).set(this.state.boardId);
 				db.ref(`boards/${this.state.boardId}/roomId`).set(this.props.roomId);
 			}
+			// Listen to room for new board data
+			this.roomRef = db.ref(`rooms/${this.props.roomId}`);
+			this.roomRef.on('value', snapshot => {
+				let room = snapshot.val();
+				if (room && room.boardId !== this.state.boardId) {
+					this.boardRef = db.ref(`boards/${room.boardId}`);
+					this.boardRef.on('value', snapshot => {
+						let boardState = snapshot.val();
+						// Update local state when db updates
+						this.setState(boardState);
+					});
+				}
+			});
+		}
+		// Generate new board if I request it
+		if (this.props.resetBoard && this.props.resetBoard !== prevProps.resetBoard) {
+			this.resetBoard();
 		}
 	}
 
