@@ -5,6 +5,7 @@ import me from './me';
 
 import BoardBack from './BoardBack';
 import UserCard from './UserCard';
+import Modal from './Modal';
 
 class GameSpace extends Component {
 	constructor(props) {
@@ -149,6 +150,16 @@ class GameSpace extends Component {
 		}
 		return (
 			<Fragment>
+				<Modal openModal={totalMatches === 8}>
+					<h1>Game Over Man!</h1>
+					<h3>Still trying to figure out who won that one...</h3>
+					<div>
+						<button onClick={() => this.requestNewBoard()} autoFocus>
+							Play Again
+						</button>
+					</div>
+				</Modal>
+
 				<BoardBack
 					roomId={this.state.roomData.id}
 					advanceTurn={this.advanceTurn}

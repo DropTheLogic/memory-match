@@ -28,8 +28,8 @@ class ReactModal extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.openModal && prevProps.openModal !== this.props.openModal) {
-			this.openModal();
+		if (prevProps.openModal !== this.props.openModal) {
+			this.props.openModal ? this.openModal() : this.closeModal();
 		}
 	}
 
