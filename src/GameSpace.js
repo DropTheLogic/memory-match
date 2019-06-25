@@ -133,6 +133,20 @@ class GameSpace extends Component {
 		}
 	}
 
+	endGameMessage() {
+		if (!this.state.opponent.matches) {
+			return `You Win! ` +
+				`But you didn't really have an opponenet there, did you...`;
+		}
+		if (this.state.me.matches > 4) {
+			return `You Win!`;
+		}
+		else if (this.state.me.matches < 4) {
+			return `You Lose :()`;
+		}
+		return 'Tie Game!';
+	}
+
 	render() {
 		let { me, opponent } = this.state;
 		let { turn } = this.state.roomData;
@@ -152,7 +166,7 @@ class GameSpace extends Component {
 			<Fragment>
 				<Modal openModal={totalMatches === 8}>
 					<h1>Game Over Man!</h1>
-					<h3>Still trying to figure out who won that one...</h3>
+					<h3>{this.endGameMessage()}</h3>
 					<div>
 						<button onClick={() => this.requestNewBoard()} autoFocus>
 							Play Again
