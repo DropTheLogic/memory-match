@@ -142,7 +142,7 @@ class GameSpace extends Component {
 			return `You Win!`;
 		}
 		else if (this.state.me.matches < 4) {
-			return `You Lose :()`;
+			return `You Lose :(`;
 		}
 		return 'Tie Game!';
 	}

@@ -39,7 +39,7 @@ class ReactModal extends Component {
 				isOpen={this.state.modalIsOpen}
 				onAfterOpen={this.afterOpenModal}
 				onRequestClose={this.closeModal}
-				className="modal"
+				className="modal grow-in"
 				overlayClassName="modal-overlay">
 				{this.props.children}
 			</Modal>
